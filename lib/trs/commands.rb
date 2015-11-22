@@ -18,11 +18,36 @@ module TRS
           succeed!
         end
       end
+    end
 
-      private
+    class Move < Command
+      def initialize
+        super(name: :move)
+      end
 
-      def placement_within_bounds?(x, y)
-        x > -1 && x < 5 && y > -1 && y < 5
+      def execute!(robot)
+        if robot.placed
+          x = robot.x
+          y = robot.y
+
+          case robot.f
+          when :north
+            y += 1
+          when :south
+            y -= 1
+          when :east
+            x += 1
+          when :west
+            x -= 1
+          end
+
+          if placement_within_bounds?(x, y)
+            robot.x = x
+            robot.y = y
+
+            succeed!
+          end
+        end
       end
     end
   end
