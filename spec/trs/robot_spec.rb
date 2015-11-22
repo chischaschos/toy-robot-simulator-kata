@@ -38,14 +38,26 @@ describe TRS::Robot do
       expect(subject.y).to be_nil
     end
 
-    xit 'discards non PLACE commands' do
-      %i{left right}.each do |command_name|
-        command = TRS::Command.new(name: command_name)
+    it 'does not rotate LEFT' do
+      command = TRS::Commands::Left.new
 
-        subject.do!(command)
+      subject.do!(command)
 
-        expect(command).not_to be_success
-      end
+      expect(command).not_to be_success
+      expect(subject.x).to be_nil
+      expect(subject.y).to be_nil
+      expect(subject.f).to be_nil
+    end
+
+    it 'does not rotate RIGHT' do
+      command = TRS::Commands::Right.new
+
+      subject.do!(command)
+
+      expect(command).not_to be_success
+      expect(subject.x).to be_nil
+      expect(subject.y).to be_nil
+      expect(subject.f).to be_nil
     end
 
     it 'can only be placed with a PLACE command' do
@@ -165,16 +177,44 @@ describe TRS::Robot do
       end
     end
 
-    context 'when the REPORT command is issued' do
-      it 'returns its X,Y and orientation' do
-        command = TRS::Commands::Place.new(%w{0 0 WEST})
+    it 'REPORTS its X,Y and orientation' do
+      command = TRS::Commands::Place.new(%w{0 0 WEST})
+      subject.do!(command)
+      command = TRS::Commands::Report.new
+
+      subject.do!(command)
+
+      expect(command).to be_success
+      expect(command.output).to eq('Output: 0,0,WEST')
+    end
+
+    context 'when the LEFT command is issued' do
+      it 'rotates LEFT' do
+        command = TRS::Commands::Place.new(%w{3 3 EAST})
         subject.do!(command)
-        command = TRS::Commands::Report.new
+        command = TRS::Commands::Left.new
 
         subject.do!(command)
 
         expect(command).to be_success
-        expect(command.output).to eq('Output: 0,0,WEST')
+        expect(subject.x).to eq(3)
+        expect(subject.y).to eq(3)
+        expect(subject.f).to eq(:north)
+      end
+    end
+
+    context 'when the RIGHT command is issued' do
+      it 'rotates RIGHT' do
+        command = TRS::Commands::Place.new(%w{3 3 EAST})
+        subject.do!(command)
+        command = TRS::Commands::Right.new
+
+        subject.do!(command)
+
+        expect(command).to be_success
+        expect(subject.x).to eq(3)
+        expect(subject.y).to eq(3)
+        expect(subject.f).to eq(:south)
       end
     end
   end

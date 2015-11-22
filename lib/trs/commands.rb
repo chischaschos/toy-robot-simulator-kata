@@ -68,5 +68,45 @@ module TRS
         end
       end
     end
+
+    class Left < Command
+      def initialize
+        super(name: :left)
+      end
+
+      def execute!(robot)
+        if robot.placed
+
+          case robot.f
+          when :north then robot.f = :west
+          when :west then robot.f = :south
+          when :south then robot.f = :east
+          when :east then robot.f = :north
+          end
+
+          succeed!
+        end
+      end
+    end
+
+    class Right < Command
+      def initialize
+        super(name: :right)
+      end
+
+      def execute!(robot)
+        if robot.placed
+
+          case robot.f
+          when :north then robot.f = :east
+          when :east then robot.f = :south
+          when :south then robot.f = :west
+          when :west then robot.f = :north
+          end
+
+          succeed!
+        end
+      end
+    end
   end
 end
