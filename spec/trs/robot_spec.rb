@@ -19,8 +19,27 @@ describe TRS::Robot do
   context 'when it has not been placed yet' do
     it { expect(subject.placed).to be_falsy }
 
+    it 'does not REPORT anything ' do
+      command = TRS::Commands::Report.new
+
+      subject.do!(command)
+
+      expect(command).not_to be_success
+      expect(command.output).to eq('')
+    end
+
+    it 'does not MOVE' do
+      command = TRS::Commands::Move.new
+
+      subject.do!(command)
+
+      expect(command).not_to be_success
+      expect(subject.x).to be_nil
+      expect(subject.y).to be_nil
+    end
+
     xit 'discards non PLACE commands' do
-      %i{left right move report}.each do |command_name|
+      %i{left right}.each do |command_name|
         command = TRS::Command.new(name: command_name)
 
         subject.do!(command)
@@ -147,7 +166,16 @@ describe TRS::Robot do
     end
 
     context 'when the REPORT command is issued' do
-      xit 'returns its X,Y and orientation'
+      it 'returns its X,Y and orientation' do
+        command = TRS::Commands::Place.new(%w{0 0 WEST})
+        subject.do!(command)
+        command = TRS::Commands::Report.new
+
+        subject.do!(command)
+
+        expect(command).to be_success
+        expect(command.output).to eq('Output: 0,0,WEST')
+      end
     end
   end
 end

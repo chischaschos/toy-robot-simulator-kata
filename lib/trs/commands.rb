@@ -50,5 +50,23 @@ module TRS
         end
       end
     end
+
+    class Report < Command
+      attr_reader :output
+
+      def initialize
+        super(name: :report)
+      end
+
+      def execute!(robot)
+        if robot.placed
+          @output = "Output: #{robot.x},#{robot.y},#{robot.f.to_s.upcase}"
+
+          succeed!
+        else
+          @output = ''
+        end
+      end
+    end
   end
 end
