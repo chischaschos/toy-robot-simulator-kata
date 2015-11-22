@@ -1,13 +1,17 @@
 module TRS
   class Robot
-    attr_reader :x, :y, :f
+    # TODO: Validate f has valid values?, parser only checks command names not
+    # arguments
+    attr_reader :x, :y, :f, :placed
 
     def initialize
       @placed = false
     end
 
     def do!(command)
-      if command.name == :place
+      case
+
+      when command.name == :place
         x = command.args[0].to_i
         y = command.args[1].to_i
 
@@ -15,6 +19,30 @@ module TRS
           @x = x
           @y = y
           @f = command.args[2].downcase.to_sym
+          @placed = true
+
+          command.succeed!
+          return
+        end
+
+      when placed && command.name == :move
+        x = @x
+        y = @y
+
+        case @f
+        when :north
+          y += 1
+        when :south
+          y -= 1
+        when :east
+          x += 1
+        when :west
+          x -= 1
+        end
+
+        if placement_within_bounds?(x, y)
+          @x = x
+          @y = y
 
           command.succeed!
           return
@@ -22,10 +50,6 @@ module TRS
       end
 
       command.fail!
-    end
-
-    def placed?
-      @placed
     end
 
     private
