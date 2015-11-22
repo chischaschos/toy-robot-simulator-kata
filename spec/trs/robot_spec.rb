@@ -1,11 +1,24 @@
 require 'spec_helper'
 
 describe TRS::Robot do
-  it "knows when it hasn't been placed yet" do
-    expect(subject).not_to be_placed
+  it 'never allows out of bounds placements' do
+    invalid_args = [
+      %w{-1  0}, %w{ 0 -1}, %w{-1 -1},
+      %w{4 5}, %w{5 4}, %w{5 5},
+    ]
+    invalid_args.each do |invalid_arg|
+      args = invalid_arg << ' NORTH'
+      command = TRS::Command.new(name: :place, args: args)
+
+      subject.do!(command)
+
+      expect(command).not_to be_success
+    end
   end
 
   context 'when it has not been placed yet' do
+    it { is_expected.not_to be_placed }
+
     it 'returns the received command as failed' do
       dummy_command = TRS::Command.new(name: :dummy, status: true)
 
