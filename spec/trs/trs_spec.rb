@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe TRS do
-
   describe '#input_command' do
     context 'when issuing a valid placement' do
       it 'PLACEs a robot' do
@@ -21,6 +20,5 @@ describe TRS do
 
       xit 'accepts consecutive commands'
     end
-
   end
 end

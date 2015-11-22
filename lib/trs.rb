@@ -7,11 +7,11 @@ module TRS
     CommandParser.new.parse(commands_statement)
   end
 
-  def self.input_command(command_statement)
-    #commands = parse_commands
-    #commands.each do |command|
+  def self.input_command(_command_statement)
+    # commands = parse_commands
+    # commands.each do |command|
     #
-    #end
+    # end
     'Output: 0,0,NORTH'
   end
 
@@ -20,7 +20,4 @@ module TRS
     robot.do!(command)
     command
   end
-
 end
-
-

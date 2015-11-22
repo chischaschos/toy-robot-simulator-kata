@@ -1,7 +1,7 @@
 module TRS
   class CommandParser
     def parse(commands_statement)
-      valid_commands = %r(^REPORT|LEFT|RIGHT|MOVE|PLACE \d,\d,\w+$)
+      valid_commands = /^REPORT|LEFT|RIGHT|MOVE|PLACE \d,\d,\w+$/
 
       commands_statement.split("\n").each_with_object([]) do |command, commands|
         clean_command = command.strip.chomp
@@ -15,8 +15,6 @@ module TRS
                    else
                      command_string.downcase.to_sym
                    end
-
-
 
       Command.new(name: name, args: args)
     end

@@ -21,6 +21,5 @@ module TRS
     def placed?
       @placed
     end
-
   end
 end

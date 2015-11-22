@@ -35,5 +35,4 @@ describe TRS::Robot do
       expect(subject.f).to eq(:north)
     end
   end
-
 end
