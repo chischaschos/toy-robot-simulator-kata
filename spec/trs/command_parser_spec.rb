@@ -30,6 +30,6 @@ describe TRS::CommandParser do
 
     place_command = commands[4]
     expect(place_command.name).to eq(:place)
-    expect(place_command.args).to eq(['0', '0', 'NORTH'])
+    expect(place_command.args).to eq(%w{0 0 NORTH})
   end
 end

@@ -17,19 +17,9 @@ describe TRS do
 
   describe '#execute_command' do
     context "when there isn't a robot placed" do
-      it 'discards commands' do
-        %w{LEFT RIGHT MOVE REPORT}.each do |command|
-          command_result = subject.execute_command(command)
+      xit 'accepts multiple commands at once'
 
-          expect(command_result).not_to be_success
-        end
-      end
-
-      xit 'accepts placements' do
-        command = subject.execute_command('PLACE 0,0,NORTH')
-
-        expect(command).to be_success
-      end
+      xit 'accepts consecutive commands'
     end
 
   end

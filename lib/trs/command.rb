@@ -11,5 +11,13 @@ module TRS
     def success?
       @status
     end
+
+    def fail!
+      @status = false
+    end
+
+    def succeed!
+      @status = true
+    end
   end
 end
