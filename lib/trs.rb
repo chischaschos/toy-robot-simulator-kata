@@ -1,35 +1,23 @@
-class TRS
+module TRS
+  autoload :CommandParser, 'trs/command_parser'
+  autoload :Command,       'trs/command'
 
-  def parse_commands(commands_statement)
-    valid_commands = %r(^REPORT|LEFT|RIGHT|MOVE|PLACE \d,\d,\w+$)
-
-    commands_statement.split("\n").each_with_object([]) do |command, commands|
-      clean_command = command.strip.chomp
-      commands << clean_command if clean_command =~ valid_commands
-    end
+  def self.parse_commands(commands_statement)
+    CommandParser.new.parse(commands_statement)
   end
 
-  def input_command(command_statement)
+  def self.input_command(command_statement)
     #commands = parse_commands
     #commands.each do |command|
     #
     #end
-      'Output: 0,0,NORTH'
+    'Output: 0,0,NORTH'
   end
 
-  def execute_command(command)
-    CommandResult.new(status: false)
+  def self.execute_command(command)
+    Command.new(status: false)
   end
 
 end
 
-class CommandResult
 
-  def initialize(status: false, output: nil)
-    @status = status
-  end
-
-  def success?
-    @status
-  end
-end
