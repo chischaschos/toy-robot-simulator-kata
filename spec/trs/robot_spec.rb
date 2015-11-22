@@ -8,7 +8,7 @@ describe TRS::Robot do
     ]
     invalid_args.each do |invalid_arg|
       args = invalid_arg << ' NORTH'
-      command = TRS::Command.new(name: :place, args: args)
+      command = TRS::Commands::Place.new(args)
 
       subject.do!(command)
 
@@ -19,7 +19,7 @@ describe TRS::Robot do
   context 'when it has not been placed yet' do
     it { expect(subject.placed).to be_falsy }
 
-    it 'returns the received command as failed' do
+    it 'returns non PLACE commands as failed' do
       dummy_command = TRS::Command.new(name: :dummy, status: true)
 
       subject.do!(dummy_command)
@@ -38,7 +38,7 @@ describe TRS::Robot do
     end
 
     it 'can only be placed with a PLACE command' do
-      command = TRS::Command.new(name: :place, args: %w{0 0 NORTH})
+      command = TRS::Commands::Place.new(%w{0 0 NORTH})
 
       subject.do!(command)
 
@@ -54,7 +54,7 @@ describe TRS::Robot do
     context 'when the MOVE command is issued' do
       context 'when the resulting position is within bounds' do
         it 'moves north' do
-          command = TRS::Command.new(name: :place, args: %w{0 0 NORTH})
+          command = TRS::Commands::Place.new(%w{0 0 NORTH})
           subject.do!(command)
           command = TRS::Command.new(name: :move)
 
@@ -66,7 +66,7 @@ describe TRS::Robot do
         end
 
         it 'moves south' do
-          command = TRS::Command.new(name: :place, args: %w{1 1 SOUTH})
+          command = TRS::Commands::Place.new(%w{1 1 SOUTH})
           subject.do!(command)
           command = TRS::Command.new(name: :move)
 
@@ -78,7 +78,7 @@ describe TRS::Robot do
         end
 
         it 'moves east' do
-          command = TRS::Command.new(name: :place, args: %w{1 1 EAST})
+          command = TRS::Commands::Place.new(%w{1 1 EAST})
           subject.do!(command)
           command = TRS::Command.new(name: :move)
 
@@ -90,7 +90,7 @@ describe TRS::Robot do
         end
 
         it 'moves west' do
-          command = TRS::Command.new(name: :place, args: %w{1 1 WEST})
+          command = TRS::Commands::Place.new(%w{1 1 WEST})
           subject.do!(command)
           command = TRS::Command.new(name: :move)
 
@@ -104,7 +104,7 @@ describe TRS::Robot do
 
       context 'when the resulting position is out of bounds' do
         it 'does not move north' do
-          command = TRS::Command.new(name: :place, args: %w{0 4 NORTH})
+          command = TRS::Commands::Place.new(%w{0 4 NORTH})
           subject.do!(command)
           expect(command).to be_success
           command = TRS::Command.new(name: :move)
@@ -117,7 +117,7 @@ describe TRS::Robot do
         end
 
         it 'does not move south' do
-          command = TRS::Command.new(name: :place, args: %w{0 0 SOUTH})
+          command = TRS::Commands::Place.new(%w{0 0 SOUTH})
           subject.do!(command)
           command = TRS::Command.new(name: :move)
 
@@ -129,7 +129,7 @@ describe TRS::Robot do
         end
 
         it 'does not move east' do
-          command = TRS::Command.new(name: :place, args: %w{4 0 EAST})
+          command = TRS::Commands::Place.new(%w{4 0 EAST})
           subject.do!(command)
           command = TRS::Command.new(name: :move)
 
@@ -141,7 +141,7 @@ describe TRS::Robot do
         end
 
         it 'does not move west' do
-          command = TRS::Command.new(name: :place, args: %w{0 0 WEST})
+          command = TRS::Commands::Place.new(%w{0 0 WEST})
           subject.do!(command)
           command = TRS::Command.new(name: :move)
 

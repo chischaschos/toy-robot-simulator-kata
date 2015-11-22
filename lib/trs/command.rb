@@ -2,7 +2,7 @@ module TRS
   class Command
     attr_reader :name, :args
 
-    def initialize(name: name, args: nil, status: false, output: nil)
+    def initialize(name:, args: nil, status: false)
       @name = name
       @args = args
       @status = status
@@ -18,6 +18,10 @@ module TRS
 
     def succeed!
       @status = true
+    end
+
+    def execute!(_robot)
+      raise 'command not implemented'
     end
   end
 end
