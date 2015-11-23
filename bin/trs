@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+
+lib_dir = File.realpath(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH << lib_dir
+
+Signal.trap('INT') do
+  puts 'Killing the robot!'
+  exit 0
+end
+
+require 'trs'
+
+robot = TRS::Robot.new
+
+print " Press ctr-c to exit\n"
+print " Valid commands:\n"
+print "   PLACE X,Y,DIRECTION\n"
+print "   MOVE\n"
+print "   LEFT\n"
+print "   RIGHT\n"
+print "   REPORT\n"
+print " Example:\n"
+print "   PLACE 0,0,NORTH\n"
+print "   LEFT\n"
+print "   REPORT\n"
+print "   Output: 0,0,WEST\n"
+
+loop do
+  print "$ "
+  command_statement = gets.strip.upcase
+  commands = TRS::CommandParser.new.parse(command_statement)
+
+  print "Invalid command \n" if commands.empty?
+
+  commands.each do |command|
+    robot.do!(command)
+
+    unless command.success?
+      print "Invalid command \n"
+    end
+
+    if command.output
+      print "#{command.output}\n"
+    end
+  end
+end
