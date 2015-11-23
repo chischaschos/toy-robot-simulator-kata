@@ -1,7 +1,7 @@
 module TRS
   class CommandParser
     def parse(commands_statement)
-      valid_commands = /^REPORT|LEFT|RIGHT|MOVE|PLACE \d,\d,\w+$/
+      valid_commands = /^REPORT|LEFT|RIGHT|MOVE|PLACE \d,\d,(NORTH|WEST|SOUTH|EAST)$/
 
       commands_statement.split("\n").each_with_object([]) do |command, commands|
         clean_command = command.strip.chomp

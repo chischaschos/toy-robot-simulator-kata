@@ -5,42 +5,53 @@ $LOAD_PATH << lib_dir
 
 Signal.trap('INT') do
   puts 'Killing the robot!'
-  exit 0
+  exit(0)
 end
 
 require 'trs'
 
-robot = TRS::Robot.new
+if ARGV[0]
+  if File.exist?(ARGV[0])
+    commands_statement = IO.read(ARGV[0])
+    TRS.input_command(commands_statement)
+  else
+    puts 'Please pass a valid file'
+  end
 
-print " Press ctr-c to exit\n"
-print " Valid commands:\n"
-print "   PLACE X,Y,DIRECTION\n"
-print "   MOVE\n"
-print "   LEFT\n"
-print "   RIGHT\n"
-print "   REPORT\n"
-print " Example:\n"
-print "   PLACE 0,0,NORTH\n"
-print "   LEFT\n"
-print "   REPORT\n"
-print "   Output: 0,0,WEST\n"
+  exit(0)
+else
+  robot = TRS::Robot.new
 
-loop do
-  print "$ "
-  command_statement = gets.strip.upcase
-  commands = TRS::CommandParser.new.parse(command_statement)
+  print " Press ctr-c to exit\n"
+  print " Valid commands:\n"
+  print "   PLACE X,Y,DIRECTION\n"
+  print "   MOVE\n"
+  print "   LEFT\n"
+  print "   RIGHT\n"
+  print "   REPORT\n"
+  print " Example:\n"
+  print "   PLACE 0,0,NORTH\n"
+  print "   LEFT\n"
+  print "   REPORT\n"
+  print "   Output: 0,0,WEST\n"
 
-  print "Invalid command \n" if commands.empty?
+  loop do
+    print '$ '
+    command_statement = gets.strip.upcase
+    commands = TRS::CommandParser.new.parse(command_statement)
 
-  commands.each do |command|
-    robot.do!(command)
+    print "Invalid command \n" if commands.empty?
 
-    unless command.success?
-      print "Invalid command \n"
-    end
+    commands.each do |command|
+      robot.do!(command)
 
-    if command.output
-      print "#{command.output}\n"
+      unless command.success?
+        print "Invalid command \n"
+      end
+
+      if command.output
+        print "#{command.output}\n"
+      end
     end
   end
 end

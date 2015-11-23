@@ -19,6 +19,10 @@ describe TRS::CommandParser do
       "MOVE\n" \
       "PLACES\n" \
       "PLACE\n" \
+      "PLACE 0,0,NORT\n" \
+      "PLACE 0,0,EAS\n" \
+      "PLACE 0,0,WESTI\n" \
+      "PLACE 0,0,SOUR\n" \
       "PLACE 0,0,NORTH\n"
 
     commands = subject.parse(commands_statement)

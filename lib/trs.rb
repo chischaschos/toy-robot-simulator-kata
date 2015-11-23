@@ -9,9 +9,10 @@ module TRS
 
     commands = CommandParser.new.parse(commands_statement)
 
-    commands.map do |command|
+    commands.each do |command|
+      puts "CMD: #{command.name} #{command.args}"
       robot.do!(command)
-      command.output
-    end.compact.join
+      puts command.output if command.output
+    end
   end
 end

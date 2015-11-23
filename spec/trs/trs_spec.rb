@@ -6,10 +6,14 @@ describe TRS do
       commands_statement = "PLACE 0,0,NORTH\n" \
         "MOVE\n" \
         "REPORT\n"
+      output = "CMD: place [\"0\", \"0\", \"NORTH\"]\n" \
+        "CMD: move \n" \
+        "CMD: report \n" \
+        "Output: 0,1,NORTH\n"
 
-      output = subject.input_command(commands_statement)
-
-      expect(output).to eq('Output: 0,1,NORTH')
+      expect do
+        subject.input_command(commands_statement)
+      end.to output(output).to_stdout
     end
 
     it 'issues PLACE, LEFT and REPORT to the robot' do
@@ -17,9 +21,14 @@ describe TRS do
         "LEFT\n" \
         "REPORT\n"
 
-      output = subject.input_command(commands_statement)
+      output = "CMD: place [\"0\", \"0\", \"NORTH\"]\n" \
+        "CMD: left \n" \
+        "CMD: report \n" \
+        "Output: 0,0,WEST\n"
 
-      expect(output).to eq('Output: 0,0,WEST')
+      expect do
+        subject.input_command(commands_statement)
+      end.to output(output).to_stdout
     end
 
     it 'issues PLACE, MOVE, MOVE, LEFT, MOVE, and REPORT to the robot' do
@@ -30,9 +39,17 @@ describe TRS do
         "MOVE\n" \
         "REPORT\n"
 
-      output = subject.input_command(commands_statement)
+      output = "CMD: place [\"1\", \"2\", \"EAST\"]\n" \
+        "CMD: move \n" \
+        "CMD: move \n" \
+        "CMD: left \n" \
+        "CMD: move \n" \
+        "CMD: report \n" \
+        "Output: 3,3,NORTH\n"
 
-      expect(output).to eq('Output: 3,3,NORTH')
+      expect do
+        subject.input_command(commands_statement)
+      end.to output(output).to_stdout
     end
   end
 end
