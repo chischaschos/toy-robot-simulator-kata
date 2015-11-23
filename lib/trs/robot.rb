@@ -1,7 +1,5 @@
 module TRS
   class Robot
-    # TODO: Validate f has valid values?, parser only checks command names not
-    # arguments
     attr_accessor :x, :y, :f, :placed
 
     def initialize
@@ -9,7 +7,19 @@ module TRS
     end
 
     def do!(command)
-      command.execute!(self)
+      if actions[command.name]
+        actions[command.name].new.execute!(command, self)
+      end
+    end
+
+    def actions
+      {
+        left:   RobotActions::Left,
+        move:   RobotActions::Move,
+        place:  RobotActions::Place,
+        report: RobotActions::Report,
+        right:  RobotActions::Right,
+      }
     end
   end
 end

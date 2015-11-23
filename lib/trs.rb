@@ -1,7 +1,7 @@
 module TRS
   autoload :CommandParser, 'trs/command_parser'
   autoload :Command,       'trs/command'
-  autoload :Commands,      'trs/commands'
+  autoload :RobotActions,  'trs/robot_actions'
   autoload :Robot,         'trs/robot'
 
   def self.input_command(commands_statement)

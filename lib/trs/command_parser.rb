@@ -16,8 +16,7 @@ module TRS
                      command_string.downcase.to_sym
                    end
 
-      command_class = Commands.const_get(name.capitalize.to_sym)
-      command_class.new(args: args)
+      Command.new(name: name, args: args)
     end
   end
 end

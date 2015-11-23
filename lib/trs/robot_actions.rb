@@ -1,31 +1,33 @@
 module TRS
-  module Commands
-    class Place < Command
-      def initialize(args)
-        super(args.merge(name: :place))
+  module RobotActions
+    module Validations
+      def placement_within_bounds?(x, y)
+        x > -1 && x < 5 && y > -1 && y < 5
       end
+    end
 
-      def execute!(robot)
-        x = args[0].to_i
-        y = args[1].to_i
+    class Place
+      include Validations
+
+      def execute!(command, robot)
+        x = command.args[0].to_i
+        y = command.args[1].to_i
 
         if placement_within_bounds?(x, y)
           robot.x = x
           robot.y = y
-          robot.f = args[2].downcase.to_sym
+          robot.f = command.args[2].downcase.to_sym
           robot.placed = true
 
-          succeed!
+          command.succeed!
         end
       end
     end
 
-    class Move < Command
-      def initialize(*)
-        super(name: :move)
-      end
+    class Move
+      include Validations
 
-      def execute!(robot)
+      def execute!(command, robot)
         if robot.placed
           x = robot.x
           y = robot.y
@@ -45,32 +47,23 @@ module TRS
             robot.x = x
             robot.y = y
 
-            succeed!
+            command.succeed!
           end
         end
       end
     end
 
-    class Report < Command
-      def initialize(*)
-        super(name: :report)
-      end
-
-      def execute!(robot)
+    class Report
+      def execute!(command, robot)
         if robot.placed
-          @output = "Output: #{robot.x},#{robot.y},#{robot.f.to_s.upcase}"
-
-          succeed!
+          command.output = "Output: #{robot.x},#{robot.y},#{robot.f.to_s.upcase}"
+          command.succeed!
         end
       end
     end
 
-    class Left < Command
-      def initialize(*)
-        super(name: :left)
-      end
-
-      def execute!(robot)
+    class Left
+      def execute!(command, robot)
         if robot.placed
 
           case robot.f
@@ -80,17 +73,13 @@ module TRS
           when :east then robot.f = :north
           end
 
-          succeed!
+          command.succeed!
         end
       end
     end
 
-    class Right < Command
-      def initialize(*)
-        super(name: :right)
-      end
-
-      def execute!(robot)
+    class Right
+      def execute!(command, robot)
         if robot.placed
 
           case robot.f
@@ -100,7 +89,7 @@ module TRS
           when :west then robot.f = :north
           end
 
-          succeed!
+          command.succeed!
         end
       end
     end
