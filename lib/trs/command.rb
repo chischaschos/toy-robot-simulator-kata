@@ -1,8 +1,8 @@
 module TRS
   class Command
-    attr_reader :name, :args
+    attr_reader :name, :args, :output
 
-    def initialize(name:, args: nil, status: false)
+    def initialize(name: nil, args: nil, status: false)
       @name = name
       @args = args
       @status = status

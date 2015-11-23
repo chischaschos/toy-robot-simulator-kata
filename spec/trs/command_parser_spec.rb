@@ -23,10 +23,10 @@ describe TRS::CommandParser do
 
     commands = subject.parse(commands_statement)
 
-    expect(commands[0].name).to eq(:report)
-    expect(commands[1].name).to eq(:left)
-    expect(commands[2].name).to eq(:right)
-    expect(commands[3].name).to eq(:move)
+    expect(commands[0]).to be_a(TRS::Commands::Report)
+    expect(commands[1]).to be_a(TRS::Commands::Left)
+    expect(commands[2]).to be_a(TRS::Commands::Right)
+    expect(commands[3]).to be_a(TRS::Commands::Move)
 
     place_command = commands[4]
     expect(place_command.name).to eq(:place)

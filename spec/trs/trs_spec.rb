@@ -2,23 +2,37 @@ require 'spec_helper'
 
 describe TRS do
   describe '#input_command' do
-    context 'when issuing a valid placement' do
-      it 'PLACEs a robot' do
-        commands_statement = "PLACE 0,0,NORTH\n" \
-          "REPORT\n"
+    it 'issues PLACE, MOVE and REPORT to the robot' do
+      commands_statement = "PLACE 0,0,NORTH\n" \
+        "MOVE\n" \
+        "REPORT\n"
 
-        output = subject.input_command(commands_statement)
+      output = subject.input_command(commands_statement)
 
-        expect(output).to eq('Output: 0,0,NORTH')
-      end
+      expect(output).to eq('Output: 0,1,NORTH')
     end
-  end
 
-  describe '#execute_command' do
-    context "when there isn't a robot placed" do
-      xit 'accepts multiple commands at once'
+    it 'issues PLACE, LEFT and REPORT to the robot' do
+      commands_statement = "PLACE 0,0,NORTH\n" \
+        "LEFT\n" \
+        "REPORT\n"
 
-      xit 'accepts consecutive commands'
+      output = subject.input_command(commands_statement)
+
+      expect(output).to eq('Output: 0,0,WEST')
+    end
+
+    it 'issues PLACE, MOVE, MOVE, LEFT, MOVE, and REPORT to the robot' do
+      commands_statement = "PLACE 1,2,EAST\n" \
+        "MOVE\n" \
+        "MOVE\n" \
+        "LEFT\n" \
+        "MOVE\n" \
+        "REPORT\n"
+
+      output = subject.input_command(commands_statement)
+
+      expect(output).to eq('Output: 3,3,NORTH')
     end
   end
 end

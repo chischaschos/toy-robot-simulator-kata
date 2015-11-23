@@ -4,21 +4,14 @@ module TRS
   autoload :Commands,      'trs/commands'
   autoload :Robot,         'trs/robot'
 
-  def self.parse_commands(commands_statement)
-    CommandParser.new.parse(commands_statement)
-  end
-
-  def self.input_command(_command_statement)
-    # commands = parse_commands
-    # commands.each do |command|
-    #
-    # end
-    'Output: 0,0,NORTH'
-  end
-
-  def self.execute_command(command)
+  def self.input_command(commands_statement)
     robot = Robot.new
-    robot.do!(command)
-    command
+
+    commands = CommandParser.new.parse(commands_statement)
+
+    commands.map do |command|
+      robot.do!(command)
+      command.output
+    end.compact.join
   end
 end

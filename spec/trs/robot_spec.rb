@@ -8,7 +8,7 @@ describe TRS::Robot do
     ]
     invalid_args.each do |invalid_arg|
       args = invalid_arg << ' NORTH'
-      command = TRS::Commands::Place.new(args)
+      command = TRS::Commands::Place.new(args: args)
 
       subject.do!(command)
 
@@ -25,7 +25,7 @@ describe TRS::Robot do
       subject.do!(command)
 
       expect(command).not_to be_success
-      expect(command.output).to eq('')
+      expect(command.output).to be_nil
     end
 
     it 'does not MOVE' do
@@ -61,7 +61,7 @@ describe TRS::Robot do
     end
 
     it 'can only be placed with a PLACE command' do
-      command = TRS::Commands::Place.new(%w{0 0 NORTH})
+      command = TRS::Commands::Place.new(args: %w{0 0 NORTH})
 
       subject.do!(command)
 
@@ -77,7 +77,7 @@ describe TRS::Robot do
     context 'when the MOVE command is issued' do
       context 'when the resulting position is within bounds' do
         it 'moves north' do
-          command = TRS::Commands::Place.new(%w{0 0 NORTH})
+          command = TRS::Commands::Place.new(args: %w{0 0 NORTH})
           subject.do!(command)
           command = TRS::Commands::Move.new
 
@@ -89,7 +89,7 @@ describe TRS::Robot do
         end
 
         it 'moves south' do
-          command = TRS::Commands::Place.new(%w{1 1 SOUTH})
+          command = TRS::Commands::Place.new(args: %w{1 1 SOUTH})
           subject.do!(command)
           command = TRS::Commands::Move.new
 
@@ -101,7 +101,7 @@ describe TRS::Robot do
         end
 
         it 'moves east' do
-          command = TRS::Commands::Place.new(%w{1 1 EAST})
+          command = TRS::Commands::Place.new(args: %w{1 1 EAST})
           subject.do!(command)
           command = TRS::Commands::Move.new
 
@@ -113,7 +113,7 @@ describe TRS::Robot do
         end
 
         it 'moves west' do
-          command = TRS::Commands::Place.new(%w{1 1 WEST})
+          command = TRS::Commands::Place.new(args: %w{1 1 WEST})
           subject.do!(command)
           command = TRS::Commands::Move.new
 
@@ -127,7 +127,7 @@ describe TRS::Robot do
 
       context 'when the resulting position is out of bounds' do
         it 'does not move north' do
-          command = TRS::Commands::Place.new(%w{0 4 NORTH})
+          command = TRS::Commands::Place.new(args: %w{0 4 NORTH})
           subject.do!(command)
           expect(command).to be_success
           command = TRS::Commands::Move.new
@@ -140,7 +140,7 @@ describe TRS::Robot do
         end
 
         it 'does not move south' do
-          command = TRS::Commands::Place.new(%w{0 0 SOUTH})
+          command = TRS::Commands::Place.new(args: %w{0 0 SOUTH})
           subject.do!(command)
           command = TRS::Commands::Move.new
 
@@ -152,7 +152,7 @@ describe TRS::Robot do
         end
 
         it 'does not move east' do
-          command = TRS::Commands::Place.new(%w{4 0 EAST})
+          command = TRS::Commands::Place.new(args: %w{4 0 EAST})
           subject.do!(command)
           command = TRS::Commands::Move.new
 
@@ -164,7 +164,7 @@ describe TRS::Robot do
         end
 
         it 'does not move west' do
-          command = TRS::Commands::Place.new(%w{0 0 WEST})
+          command = TRS::Commands::Place.new(args: %w{0 0 WEST})
           subject.do!(command)
           command = TRS::Commands::Move.new
 
@@ -178,7 +178,7 @@ describe TRS::Robot do
     end
 
     it 'REPORTS its X,Y and orientation' do
-      command = TRS::Commands::Place.new(%w{0 0 WEST})
+      command = TRS::Commands::Place.new(args: %w{0 0 WEST})
       subject.do!(command)
       command = TRS::Commands::Report.new
 
@@ -190,7 +190,7 @@ describe TRS::Robot do
 
     context 'when the LEFT command is issued' do
       it 'rotates LEFT' do
-        command = TRS::Commands::Place.new(%w{3 3 EAST})
+        command = TRS::Commands::Place.new(args: %w{3 3 EAST})
         subject.do!(command)
         command = TRS::Commands::Left.new
 
@@ -205,7 +205,7 @@ describe TRS::Robot do
 
     context 'when the RIGHT command is issued' do
       it 'rotates RIGHT' do
-        command = TRS::Commands::Place.new(%w{3 3 EAST})
+        command = TRS::Commands::Place.new(args: %w{3 3 EAST})
         subject.do!(command)
         command = TRS::Commands::Right.new
 

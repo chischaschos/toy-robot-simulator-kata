@@ -2,7 +2,7 @@ module TRS
   module Commands
     class Place < Command
       def initialize(args)
-        super(name: :place, args: args)
+        super(args.merge(name: :place))
       end
 
       def execute!(robot)
@@ -21,7 +21,7 @@ module TRS
     end
 
     class Move < Command
-      def initialize
+      def initialize(*)
         super(name: :move)
       end
 
@@ -52,9 +52,7 @@ module TRS
     end
 
     class Report < Command
-      attr_reader :output
-
-      def initialize
+      def initialize(*)
         super(name: :report)
       end
 
@@ -63,14 +61,12 @@ module TRS
           @output = "Output: #{robot.x},#{robot.y},#{robot.f.to_s.upcase}"
 
           succeed!
-        else
-          @output = ''
         end
       end
     end
 
     class Left < Command
-      def initialize
+      def initialize(*)
         super(name: :left)
       end
 
@@ -90,7 +86,7 @@ module TRS
     end
 
     class Right < Command
-      def initialize
+      def initialize(*)
         super(name: :right)
       end
 
